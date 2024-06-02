@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}ИСУП ПСР{% endblock %}</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.jpg' %}" alt="Logo">
+            </a>
+            <h1 style="font-size: 20px;">ИСУП ПСР</h1>
+        </div>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <!-- Убрали вертикальные линии -->
+                <a href="{% url 'user_detail' user.id %}" class="user-info-link"> <!-- Добавлен класс user-info-link -->
+                    {% if user.first_name or user.last_name or user.userprofile.middle_name %}
+                        {{ user.last_name }} {{ user.first_name }} {{ user.userprofile.middle_name }}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                </a>
+                <!-- Убрали вертикальные линии -->
+                <a href="{% url 'logout' %}" class="login-btn">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-btn">Войти</a>
+            {% endif %}
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Главная</a></li>
+            <li><a href="{% url 'project_list' %}" class="{% if request.path == '/projects/' %}active{% endif %}">Проекты</a></li>
+            {% if user.is_staff %}
+                <li><a href="{% url 'user_list' %}" class="{% if request.path == '/user_list/' %}active{% endif %}">Пользователи</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        &copy; 2024 ИСУП ПСР
+    </footer>
+</body>
+</html>

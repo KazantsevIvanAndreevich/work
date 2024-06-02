@@ -1,0 +1,13 @@
+{% extends 'admin_base.html' %}
+
+{% block admin_content %}
+<h2>Загрузка данных</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="data_file">Выберите файл для загрузки:</label>
+        <input type="file" id="data_file" name="data_file" required>
+    </div>
+    <button type="submit" class="btn">Загрузить</button>
+</form>
+{% endblock %}
