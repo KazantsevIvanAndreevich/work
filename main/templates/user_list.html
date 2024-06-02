@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Пользователи - ИСУП ПСР{% endblock %}
+
+{% block content %}
+    <div class="user-list-container">
+        <h2>Пользователи</h2>
+        <form class="search-form" method="get">
+            <div class="search-input-container">
+                <input type="text" name="search" value="{{ search }}" placeholder="Поиск пользователей...">
+                <button type="submit">Найти</button>
+            </div>
+        </form>
+        <div class="button-group">
+            <form class="inactive-form" method="get">
+                <input type="hidden" name="search" value="{{ search }}">
+                <input type="hidden" name="show_inactive" value="true">
+                <button type="submit" class="show-inactive-btn">Показать неактивных пользователей</button>
+            </form>
+            <a href="{% url 'add_user' %}" class="add-user-btn">Добавить пользователя</a>
+        </div>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Имя пользователя</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr {% if not user.is_active %}class="inactive-user"{% endif %}>
+                        <td><a href="{% url 'user_detail' user.id %}">{{ user.username }}</a></td>
+                        <td>
+                            <a href="{% url 'edit_user' user.id %}">Сменить пароль</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

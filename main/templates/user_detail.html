@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Детали пользователя{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Пользователь №{{ user.id }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Учетная запись</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Фамилия</label>
+            <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="form-group">
+            <label for="first_name">Имя</label>
+            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="form-group">
+            <label for="middle_name">Отчество</label>
+            <input type="text" id="middle_name" name="middle_name" value="{{ user.userprofile.middle_name }}">
+        </div>
+        <div class="form-group">
+            <label for="email">Почта</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="text" id="phone" name="phone" value="{{ user.userprofile.phone }}">
+        </div>
+        <div class="form-group">
+            <label for="department">Отдел (цех)</label>
+            <select id="department" name="department">
+                {% for department in departments %}
+                    <option value="{{ department.id }}" {% if user.userprofile.department and user.userprofile.department.id == department.id %}selected{% endif %}>{{ department.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="position">Должность</label>
+            <input type="text" id="position" name="position" value="{{ user.userprofile.position }}">
+        </div>
+        <div class="form-group">
+            <label for="location">Расположение</label>
+            <input type="text" id="location" name="location" value="{{ user.userprofile.location }}">
+        </div>
+        <div class="form-group">
+            <label for="is_active">Активен</label>
+            <select id="is_active" name="is_active">
+                <option value="true" {% if user.is_active %}selected{% endif %}>Да</option>
+                <option value="false" {% if not user.is_active %}selected{% endif %}>Нет</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="created_at">Дата создания пользователя</label>
+            <input type="text" id="created_at" name="created_at" value="{{ user.date_joined }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="roles">Роли</label>
+            {% for role in roles %}
+                <div>
+                    <input type="checkbox" id="role_{{ role.id }}" name="roles" value="{{ role.id }}" {% if role.id in user_roles_ids %}checked{% endif %}>
+                    <label for="role_{{ role.id }}">{{ role.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn">Сохранить изменения</button>
+    </form>
+</div>
+{% endblock %}
