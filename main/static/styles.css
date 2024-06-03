@@ -306,3 +306,38 @@ nav ul li a:hover {
 .btn:hover {
     background-color: #0056b3;
 }
+.container {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.role-list {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    overflow: hidden; /* clearfix */
+    width: 100%; /* Ширина как у полей выше */
+}
+
+.role-checkbox {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.role-checkbox input {
+    margin-right: 10px;
+}
+
+.role-checkbox label {
+    margin: 0;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
