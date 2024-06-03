@@ -18,10 +18,36 @@ def home(request):
     return render(request, 'home.html')
 
 def project_list(request):
-    return render(request, 'project_list.html')
+    projects = Project.objects.all()
+    return render(request, 'project_list.html', {'projects': projects})
 
-def project_detail(request):
-    return render(request, 'project_detail.html')
+def project_create(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('project_list')
+    else:
+        form = ProjectForm()
+    return render(request, 'project_form.html', {'form': form})
+
+def project_edit(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project_list')
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'project_form.html', {'form': form})
+
+def project_delete(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.method == 'POST':
+        project.delete()
+        return redirect('project_list')
+    return render(request, 'project_confirm_delete.html', {'project': project})
 
 def login_view(request):
     if request.method == 'POST':
