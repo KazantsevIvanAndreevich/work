@@ -81,23 +81,23 @@ def user_detail(request, user_id):
             user.is_active = request.POST['is_active'] == 'true'
 
             profile = user.userprofile
-            profile.middle_name = request.POST.get('middle_name', '')
-            profile.phone = request.POST.get('phone', '')
+            profile.middle_name = request.POST.get('middle_name', '')  # Добавляем значение по умолчанию
+            profile.phone = request.POST.get('phone', '')  # Добавляем значение по умолчанию
+            # Проверяем, существует ли ключ 'department' в POST-запросе
             if 'department' in request.POST:
                 profile.department_id = request.POST['department']
             else:
-                profile.department = None
-            profile.position = request.POST.get('position', '')
-            profile.location = request.POST.get('location', '')
-
-            selected_roles = request.POST.getlist('roles')
-            profile.roles.set(selected_roles)
+                profile.department = None  # Устанавливаем значение None в случае отсутствия
+            profile.position = request.POST.get('position', '')  # Добавляем значение по умолчанию
+            profile.location = request.POST.get('location', '')  # Добавляем значение по умолчанию
+            profile.roles.set(request.POST.getlist('roles'))
 
             user.save()
             profile.save()
             messages.success(request, 'Изменения успешно сохранены.')
             return redirect('user_list')
         except MultiValueDictKeyError as e:
+            # Обработка ошибки, если ключ 'department' отсутствует в POST-запросе
             messages.error(request, f'Произошла ошибка: {e}')
             return redirect('user_list')
 
