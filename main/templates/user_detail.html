@@ -60,12 +60,14 @@
         </div>
         <div class="form-group">
             <label for="roles">Роли</label>
-            {% for role in roles %}
-                <div>
-                    <input type="checkbox" id="role_{{ role.id }}" name="roles" value="{{ role.id }}" {% if role.id in user_roles_ids %}checked{% endif %}>
-                    <label for="role_{{ role.id }}">{{ role.name }}</label>
-                </div>
-            {% endfor %}
+            <div class="role-list clearfix">
+                {% for role in roles %}
+                    <div class="role-checkbox">
+                        <input type="checkbox" id="role_{{ role.id }}" name="roles" value="{{ role.id }}" {% if role.id in user_roles_ids %}checked{% endif %}>
+                        <label for="role_{{ role.id }}">{{ role.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
         <button type="submit" class="btn">Сохранить изменения</button>
     </form>
