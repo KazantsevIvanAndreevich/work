@@ -16,7 +16,6 @@
         </div>
         <div class="user-info">
             {% if user.is_authenticated %}
-                <!-- Убрали вертикальные линии -->
                 <a href="{% url 'user_detail' user.id %}" class="user-info-link"> <!-- Добавлен класс user-info-link -->
                     {% if user.first_name or user.last_name or user.userprofile.middle_name %}
                         {{ user.last_name }} {{ user.first_name }} {{ user.userprofile.middle_name }}
@@ -24,7 +23,6 @@
                         {{ user.username }}
                     {% endif %}
                 </a>
-                <!-- Убрали вертикальные линии -->
                 <a href="{% url 'logout' %}" class="login-btn">Выйти</a>
             {% else %}
                 <a href="{% url 'login' %}" class="login-btn">Войти</a>
