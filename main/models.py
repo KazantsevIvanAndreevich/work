@@ -28,63 +28,47 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-# Модель для проектов
+STATUS_CHOICES = [
+    ('draft', 'Черновик'),
+    ('in_progress', 'Реализация'),
+    ('completed', 'Завершен')
+]
+
 class Project(models.Model):
-    # Общие сведения о проекте
-    name = models.CharField(max_length=100, null=True)
-    registration_number = models.CharField(max_length=50, blank=True, null=True)
-    start_date = models.DateField(auto_now_add=True)
-    status_choices = [
-        ('draft', 'Черновик'),
-        ('completed', 'Завершен'),
-        ('in_progress', 'Реализация')
-    ]
-    status = models.CharField(max_length=20, choices=status_choices, default='draft')
-    process_choices = [
-        ('MTO', 'МТО'),
-        ('ETP', 'ЭТП'),
-        ('SP', 'СП'),
-        ('Safety', 'Безопасность'),
-        ('Quality', 'Качество'),
-        ('FEB', 'ФЭБ'),
-        ('Repair/Capital_Construction', 'Ремонт/Кап. Строительство'),
-        ('Office', 'Офисный')
-    ]
-    process = models.CharField(max_length=50, choices=process_choices, null=True)
+    name = models.CharField(max_length=255, verbose_name="Наименование ПСР-проекта")
+    registration_number = models.CharField(max_length=100, blank=True, verbose_name="Регистрационный номер")
+    start_date = models.DateField(auto_now_add=True, editable=True, verbose_name="Дата начала проекта")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft', verbose_name="Статус проекта")
+    optimized_process = models.CharField(max_length=255, choices=[('MTO', 'МТО'), ('ETP', 'ЭТП'), ('SP', 'СП'), ('Safety', 'Безопасность'), ('Quality', 'Качество'), ('FEB', 'ФЭБ'), ('Repair', 'Ремонт/Кап. Строительство'), ('Office', 'Офисный')], verbose_name="Оптимизируемый процесс")
 
-    # Вовлеченные лица и рамки проекта
-    customer = models.CharField(max_length=100, null=True)
-    customer_position = models.ForeignKey(User, related_name='customer_position', on_delete=models.CASCADE, null=True)
-    project_scope = models.TextField(null=True)
-    process_boundaries = models.TextField(null=True)
-    process_owner = models.CharField(max_length=100, null=True)
-    project_administrator = models.ForeignKey(User, related_name='project_administrator', on_delete=models.CASCADE, null=True)
-    project_manager = models.CharField(max_length=100, null=True)
-    project_team = models.ManyToManyField(User, related_name='project_team')
-    process_customers = models.CharField(max_length=100, null=True)
-    psr_expert = models.CharField(max_length=100, null=True)
+    # Additional fields for project details
+    customer = models.CharField(max_length=255, verbose_name="Заказчик проекта")
+    customer_position = models.CharField(max_length=255, verbose_name="Должность заказчика")
+    project_scope = models.TextField(verbose_name="Периметр проекта")
+    process_boundary = models.TextField(verbose_name="Границы процесса")
+    process_owner = models.CharField(max_length=255, verbose_name="Владелец процесса")
+    project_admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='admin_projects', verbose_name="Администратор проекта")
+    project_manager = models.CharField(max_length=255, verbose_name="Руководитель проекта")
+    project_team = models.ManyToManyField(User, related_name='team_projects', verbose_name="Команда проекта")
+    process_customers = models.CharField(max_length=255, verbose_name="Заказчики процесса")
+    psr_expert = models.CharField(max_length=255, verbose_name="Эксперт от ПСР")
 
-    # Обоснование выбора
-    key_risk = models.TextField(null=True)
-    additional_risks = models.TextField(null=True)
-    completion_percentage = models.IntegerField(default=0)
-    project_status_comment = models.TextField(null=True)
+    key_risk = models.TextField(verbose_name="Ключевой риск")
+    additional_risks = models.TextField(verbose_name="Дополнительные риски")
+    completion_percentage = models.FloatField(default=0, verbose_name="Процент завершения")
+    overall_status = models.TextField(verbose_name="Общий статус проекта")
 
-    # Цели и плановый эффект
-    has_economic_effect = models.BooleanField(choices=[(True, 'Да'), (False, 'Нет')])
-    planned_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    actual_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    goal_name = models.CharField(max_length=100, null=True)
-    unit_of_measurement = models.CharField(max_length=50, null=True)
-    current_indicator = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    target_indicator = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    economic_effect = models.CharField(max_length=3, choices=[('yes', 'да'), ('no', 'нет')], verbose_name="Наличие экономического эффекта")
+    planned_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Плановая величина экономического эффекта, руб.")
+    actual_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Фактическая величина экономического эффекта, руб.")
+    goal_name = models.CharField(max_length=255, verbose_name="Наименование цели")
 
-    # Ключевые события (заполняются автоматически)
-    project_start = models.DateField(null=True)
-    diagnosis_target_state = models.DateField(null=True)
-    improvement_implementation = models.DateField(null=True)
-    results_consolidation_project_closure = models.DateField(null=True)
-    post_project_monitoring = models.DateField(null=True)
+    # Auto-filled fields based on project plan
+    start_event = models.DateField(null=True, blank=True, verbose_name="Старт проекта")
+    diagnostics_event = models.DateField(null=True, blank=True, verbose_name="Диагностика и Целевое состояние")
+    improvements_event = models.DateField(null=True, blank=True, verbose_name="Внедрение улучшений")
+    closure_event = models.DateField(null=True, blank=True, verbose_name="Закрепление результатов и закрытие проекта")
+    post_monitoring_event = models.DateField(null=True, blank=True, verbose_name="Постпроектный мониторинг")
 
     def __str__(self):
         return self.name
