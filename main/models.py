@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -59,11 +60,10 @@ class Project(models.Model):
     overall_status = models.TextField(verbose_name="Общий статус проекта", default='')  # Provide a default value
 
     economic_effect = models.CharField(max_length=3, choices=[('yes', 'да'), ('no', 'нет')], default='no', verbose_name="Наличие экономического эффекта")
-    planned_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True, verbose_name="Плановая величина экономического эффекта, руб.")
-    actual_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True, verbose_name="Фактическая величина экономического эффекта, руб.")
+    planned_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), null=True, verbose_name="Плановая величина экономического эффекта, руб.")
+    actual_economic_effect = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), null=True, verbose_name="Фактическая величина экономического эффекта, руб.")
     goal_name = models.CharField(max_length=255, verbose_name="Наименование цели")
 
-    # Auto-filled fields based on project plan
     # Auto-filled fields based on project plan
     start_event = models.DateField(null=True, blank=True, verbose_name="Старт проекта")
     diagnostics_event = models.DateField(null=True, blank=True, verbose_name="Диагностика и Целевое состояние")
@@ -71,8 +71,6 @@ class Project(models.Model):
     closure_event = models.DateField(null=True, blank=True, verbose_name="Закрепление результатов и закрытие проекта")
     post_monitoring_event = models.DateField(null=True, blank=True, verbose_name="Постпроектный мониторинг")
 
-    def __str__(self):
-        return self.name
     def __str__(self):
         return self.name
 
