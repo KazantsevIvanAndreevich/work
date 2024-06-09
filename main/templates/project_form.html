@@ -2,11 +2,23 @@
 
 {% block content %}
 <div class="container">
-    <h2>{% if form.instance.pk %}Редактировать проект{% else %}Создать новый проект{% endif %}</h2>
-    <form method="post">
+    <h2 class="text-center">{% if form.instance.pk %}Редактировать проект{% else %}Создать новый проект{% endif %}</h2>
+    <form method="post" class="form-horizontal">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {% for field in form %}
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                <div class="col-sm-8">
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
     </form>
 </div>
 {% endblock %}
