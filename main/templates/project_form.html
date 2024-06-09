@@ -1,42 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Создание/Редактирование ПСР проекта</h2>
-  <form method="post">
-    {% csrf_token %}
-
-    <h3>Общие сведения о проекте</h3>
-    {{ form.name }}
-    {{ form.registration_number }}
-    {{ form.start_date }}
-    {{ form.status }}
-    {{ form.optimized_process }}
-
-    <h3>Вовлеченные лица и рамки проекта</h3>
-    {{ form.customer }}
-    {{ form.customer_position }}
-    {{ form.project_scope }}
-    {{ form.process_boundary }}
-    {{ form.process_owner }}
-    {{ form.project_admin }}
-    {{ form.project_manager }}
-    {{ form.project_team }}
-    {{ form.process_customers }}
-    {{ form.psr_expert }}
-
-    <h3>Обоснование выбора</h3>
-    {{ form.key_risk }}
-    {{ form.additional_risks }}
-    {{ form.completion_percentage }}
-    {{ form.overall_status }}
-
-    <h3>Цели и плановый эффект</h3>
-    {{ form.economic_effect }}
-    {{ form.planned_economic_effect }}
-    {{ form.actual_economic_effect }}
-    {{ form.goal_name }}
-
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a href="{% url 'project_list' %}" class="btn btn-secondary">Закрыть</a>
-  </form>
+<div class="container">
+    <h2>{% if form.instance.pk %}Редактировать проект{% else %}Создать новый проект{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
 {% endblock %}
