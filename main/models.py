@@ -28,12 +28,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
-STATUS_CHOICES = [
-    ('draft', 'Черновик'),
-    ('in_progress', 'Реализация'),
-    ('completed', 'Завершен')
-]
-
 status_choices = [
     ('draft', 'Черновик'),
     ('completed', 'Завершен'),
