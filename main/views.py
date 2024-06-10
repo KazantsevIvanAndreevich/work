@@ -21,9 +21,20 @@ from django.conf import settings
 def home(request):
     return render(request, 'home.html')
 
+
 def project_list(request):
-    projects = Project.objects.all()
-    return render(request, 'project_list.html', {'projects': projects})
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')  # Фильтр по статусу
+
+    # Создание Q-объектов для фильтрации
+    filter_query = Q(name__icontains=search_query) | Q(reg_number__icontains=search_query)
+
+    if status_filter:
+        filter_query &= Q(status=status_filter)
+
+    projects = Project.objects.filter(filter_query)
+
+    return render(request, 'project_list.html', {'projects': projects, 'search': search_query})
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
