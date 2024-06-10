@@ -4,10 +4,10 @@
 <div class="container">
     <h2>Проекты</h2>
     <form class="search-form" method="get">
-            <div class="search-input-container">
-                <input type="text" name="search" value="{{ search }}" placeholder="Поиск проекта...">
-                <button type="submit">Найти</button>
-            </div>
+        <div class="search-input-container">
+            <input type="text" name="search" value="{{ search }}" placeholder="Поиск проекта...">
+            <button type="submit">Найти</button>
+        </div>
     </form>
 
     <p><a href="{% url 'project_create' %}" class="btn btn-primary mb-3">Создать новый проект</a></p>
@@ -17,9 +17,10 @@
             <tr>
                 <th>Наименование ПСР-проекта</th>
                 <th>Регистрационный номер</th>
-                <th>Дата начала проекта</th>
+                <th>Начало</th>
                 <th>Статус проекта</th>
                 <th>Оптимизируемый процесс</th>
+                <th>Процент завершения, %</th>
                 <th>Действия</th>
             </tr>
         </thead>
@@ -31,9 +32,14 @@
                 <td>{{ project.start_date }}</td>
                 <td>{{ project.get_status_display }}</td>
                 <td>{{ project.optimized_process }}</td>
+                <td>{{ project.completion_percentage }}</td>
                 <td>
-                   <p> <a href="{% url 'project_update' project.pk %}" class="btn btn-warning">Редактировать</a></p>
-                   <p> <a href="{% url 'project_confirm_delete' project.pk %}" class="btn btn-danger">Удалить</a></p>
+                    <select onchange="location = this.value;">
+                        <option value="#" selected disabled>Выберите действие</option>
+                        <option value="{% url 'project_update' project.pk %}">Редактировать</option>
+                        <option value="{% url 'project_confirm_delete' project.pk %}">Удалить</option>
+                        <option value="{% url 'project_download_card' project.pk %}">Скачать карточку проекта</option>
+                    </select>
                 </td>
             </tr>
             {% endfor %}

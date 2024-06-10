@@ -12,6 +12,10 @@ from django.contrib.messages import constants as messages_constants
 from .models import *
 from django.utils.datastructures import MultiValueDictKeyError
 from django.db.models import Q
+from docx import Document
+import io
+import os
+from django.conf import settings
 
 
 def home(request):
@@ -52,6 +56,50 @@ def project_confirm_delete(request, pk):
         project.delete()
         return redirect('project_list')
     return render(request, 'project_confirm_delete.html', {'project': project})
+
+
+import os
+
+
+def download_project_card(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    document_path = "main/documents/project_template.docx"
+
+    # Debugging information
+    print(f"BASE_DIR: {settings.BASE_DIR}")  # Output the BASE_DIR being used
+    print(f"Document path: {document_path}")  # Output the path being used
+
+    # Check if the file exists
+    if not os.path.exists(document_path):
+        raise FileNotFoundError(f"Template not found at {document_path}")
+    else:
+        print("File exists")  # Debugging line
+
+    document = Document(document_path)
+
+    for paragraph in document.paragraphs:
+        if '{{ project.name }}' in paragraph.text:
+            paragraph.text = paragraph.text.replace('{{ project.name }}', project.name)
+        if '{{ project.reg_number }}' in paragraph.text:
+            paragraph.text = paragraph.text.replace('{{ project.reg_number }}', project.reg_number)
+        if '{{ project.start_date }}' in paragraph.text:
+            paragraph.text = paragraph.text.replace('{{ project.start_date }}', str(project.start_date))
+        if '{{ project.get_status_display }}' in paragraph.text:
+            paragraph.text = paragraph.text.replace('{{ project.get_status_display }}', project.get_status_display())
+        if '{{ project.optimized_process }}' in paragraph.text:
+            paragraph.text = paragraph.text.replace('{{ project.optimized_process }}', project.optimized_process)
+        # Add more replacements as needed
+
+        # Save the document to a BytesIO object
+    buffer = io.BytesIO()
+    document.save(buffer)
+    buffer.seek(0)
+
+    # Serve the document as a downloadable file
+    response = HttpResponse(buffer,
+                            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename=project_{project.pk}.docx'
+    return response
 
 def login_view(request):
     if request.method == 'POST':

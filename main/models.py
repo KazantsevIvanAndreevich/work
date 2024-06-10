@@ -39,8 +39,12 @@ class Project(models.Model):
     reg_number = models.CharField(max_length=50, unique=True, verbose_name="Регистрационный номер")
     start_date = models.DateField(auto_now_add=True, null=True, verbose_name="Дата начала проекта")
     status = models.CharField(max_length=20, choices=status_choices, default='draft', verbose_name="Статус проекта")
-    optimized_process = models.CharField(max_length=255, verbose_name="Оптимизируемый процесс")
-
+    optimized_process = models.CharField(max_length=255, choices=[('MTO', 'МТО'), ('ETP', 'ЭТП'), ('SP', 'СП'),
+                                                                  ('Safety', 'Безопасность'), ('Quality', 'Качество'),
+                                                                  ('FEB', 'ФЭБ'),
+                                                                  ('Repair', 'Ремонт/Кап. Строительство'),
+                                                                  ('Office', 'Офисный')],
+                                         verbose_name="Оптимизируемый процесс")
     customer = models.CharField(max_length=255, verbose_name="Заказчик проекта")
     customer_position = models.CharField(max_length=255, verbose_name="Должность заказчика")
     project_scope = models.TextField(null=True, verbose_name="Периметр проекта")
