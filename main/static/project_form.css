@@ -1,0 +1,69 @@
+/* project_form.css */
+
+/* Обертка для формы проекта */
+.project-container {
+    max-width: 1400px; /* Увеличим ширину контейнера */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.project-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.project-form fieldset {
+    margin-bottom: 20px;
+    padding: 15px; /* Увеличим отступы внутри fieldset */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.project-form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.project-form-section {
+    width: 48%; /* Уменьшим до 48%, чтобы увеличить отступы между секциями */
+    border: 1px solid #ddd;
+    padding: 20px; /* Увеличим отступы внутри секций */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-form-section legend {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.project-form-group {
+    margin-bottom: 15px;
+}
+
+.project-form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.project-form-group input, .project-form-group select, .project-form-group textarea {
+    width: 50%; /* Поля будут занимать всю ширину секции */
+    padding: 10px; /* Увеличим отступы внутри полей */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Убедимся, что padding включается в общую ширину */
+}
+
+.project-form-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.project-form-actions .btn {
+    display: inline-block;
+    margin: 5px;
+}

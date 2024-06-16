@@ -7,3 +7,5 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ('name', 'registration_number', 'customer', 'process_owner', 'project_manager')
 
 admin.site.register(Role)
+
+admin.site.register(Department)

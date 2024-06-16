@@ -1,146 +1,136 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div class="container">
+<link rel="stylesheet" href="{% static 'project_form.css' %}">
+<div class="project-container">
     <h2>{% if form.instance.pk %}Редактировать проект{% else %}Создать новый проект{% endif %}</h2>
     <form method="post" class="project-form">
         {% csrf_token %}
-        <!-- Общие сведения о проекте -->
+
         <fieldset>
             <legend>Общие сведения о проекте</legend>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.name.label_tag }} {{ form.name }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.reg_number.label_tag }} {{ form.reg_number }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.start_date.label_tag }} {{ form.start_date }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.psr_stream.label_tag }} {{ form.psr_stream }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.status.label_tag }} {{ form.status }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.optimized_process.label_tag }} {{ form.optimized_process }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.dc_indicator.label_tag }} {{ form.dc_indicator }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.priority_psr_project.label_tag }} {{ form.priority_psr_project }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.organization.label_tag }} {{ form.organization }}
             </div>
-            <div class="form-group">
+            <div class="project-form-group">
                 {{ form.functional_block.label_tag }} {{ form.functional_block }}
             </div>
         </fieldset>
 
-        <!-- Вовлеченные лица и рамки проекта -->
-        <fieldset>
-            <legend>Вовлеченные лица и рамки проекта</legend>
-            <div class="form-group">
-                {{ form.customer.label_tag }} {{ form.customer }}
+        <div class="project-form-row">
+            <div class="project-form-section">
+                <fieldset>
+                    <legend>Вовлеченные лица и рамки проекта</legend>
+                    <div class="project-form-group">
+                        {{ form.customer.label_tag }} {{ form.customer }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.customer_position.label_tag }} {{ form.customer_position }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.project_scope.label_tag }} {{ form.project_scope }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.process_boundaries.label_tag }} {{ form.process_boundaries }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.process_owner.label_tag }} {{ form.process_owner }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.project_admin.label_tag }} {{ form.project_admin }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.project_manager.label_tag }} {{ form.project_manager }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.team_members.label_tag }} {{ form.team_members }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.process_customers.label_tag }} {{ form.process_customers }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.psr_expert.label_tag }} {{ form.psr_expert }}
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Обоснование выбора</legend>
+                    <div class="project-form-group">
+                        {{ form.key_risk.label_tag }} {{ form.key_risk }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.additional_risks.label_tag }} {{ form.additional_risks }}
+                    </div>
+                </fieldset>
             </div>
-            <div class="form-group">
-                {{ form.customer_position.label_tag }} {{ form.customer_position }}
+            <div class="project-form-section">
+                <fieldset>
+                    <legend>Цели и плановый эффект</legend>
+                    <div class="project-form-group">
+                        {{ form.economic_effect_available.label_tag }} {{ form.economic_effect_available }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.planned_economic_effect.label_tag }} {{ form.planned_economic_effect }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.actual_economic_effect.label_tag }} {{ form.actual_economic_effect }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.goal_name.label_tag }} {{ form.goal_name }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.measurement_unit.label_tag }} {{ form.measurement_unit }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.current_value.label_tag }} {{ form.current_value }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.target_value.label_tag }} {{ form.target_value }}
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Ключевые события</legend>
+                    <div class="project-form-group">
+                        {{ form.start_date.label_tag }} {{ form.start_date }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.dc_indicator.label_tag }} {{ form.dc_indicator }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.priority_psr_project.label_tag }} {{ form.priority_psr_project }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.organization.label_tag }} {{ form.organization }}
+                    </div>
+                </fieldset>
             </div>
-            <div class="form-group">
-                {{ form.project_scope.label_tag }} {{ form.project_scope }}
-            </div>
-            <div class="form-group">
-                {{ form.process_boundaries.label_tag }} {{ form.process_boundaries }}
-            </div>
-            <div class="form-group">
-                {{ form.process_owner.label_tag }} {{ form.process_owner }}
-            </div>
-            <div class="form-group">
-                {{ form.project_admin.label_tag }} {{ form.project_admin }}
-            </div>
-            <div class="form-group">
-                {{ form.project_manager.label_tag }} {{ form.project_manager }}
-            </div>
-            <div class="form-group">
-                {{ form.team_members.label_tag }} {{ form.team_members }}
-            </div>
-            <div class="form-group">
-                {{ form.process_customers.label_tag }} {{ form.process_customers }}
-            </div>
-            <div class="form-group">
-                {{ form.psr_expert.label_tag }} {{ form.psr_expert }}
-            </div>
-        </fieldset>
-
-        <!-- Обоснование выбора -->
-        <fieldset>
-            <legend>Обоснование выбора</legend>
-            <div class="form-group">
-                {{ form.key_risk.label_tag }} {{ form.key_risk }}
-            </div>
-            <div class="form-group">
-                {{ form.additional_risks.label_tag }} {{ form.additional_risks }}
-            </div>
-        </fieldset>
-
-        <!-- Информация о ходе выполнения проекта -->
-        <fieldset>
-            <legend>Информация о ходе выполнения проекта</legend>
-            <div class="form-group">
-                {{ form.completion_percentage.label_tag }} {{ form.completion_percentage }}
-            </div>
-            <div class="form-group">
-                {{ form.overall_status_comment.label_tag }} {{ form.overall_status_comment }}
-            </div>
-        </fieldset>
-
-        <!-- Цели и плановый эффект -->
-        <fieldset>
-            <legend>Цели и плановый эффект</legend>
-            <div class="form-group">
-                {{ form.economic_effect_available.label_tag }} {{ form.economic_effect_available }}
-            </div>
-            <div class="form-group">
-                {{ form.planned_economic_effect.label_tag }} {{ form.planned_economic_effect }}
-            </div>
-            <div class="form-group">
-                {{ form.actual_economic_effect.label_tag }} {{ form.actual_economic_effect }}
-            </div>
-            <div class="form-group">
-                {{ form.goal_name.label_tag }} {{ form.goal_name }}
-            </div>
-            <div class="form-group">
-                {{ form.measurement_unit.label_tag }} {{ form.measurement_unit }}
-            </div>
-            <div class="form-group">
-                {{ form.current_value.label_tag }} {{ form.current_value }}
-            </div>
-            <div class="form-group">
-                {{ form.target_value.label_tag }} {{ form.target_value }}
-            </div>
-        </fieldset>
-
-        <!-- Ключевые события (область появляется после создания календарного плана проекта) -->
-        <fieldset>
-            <legend>Ключевые события</legend>
-            <div class="form-group">
-                {{ form.start_date.label_tag }} {{ form.start_date }}
-            </div>
-            <div class="form-group">
-                {{ form.dc_indicator.label_tag }} {{ form.dc_indicator }}
-            </div>
-            <div class="form-group">
-                {{ form.priority_psr_project.label_tag }} {{ form.priority_psr_project }}
-            </div>
-            <div class="form-group">
-                {{ form.organization.label_tag }} {{ form.organization }}
-            </div>
-        </fieldset>
-
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+        <div class="project-form-actions">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
     </form>
 </div>
 {% endblock %}
