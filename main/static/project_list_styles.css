@@ -1,40 +1,36 @@
 /* project_list_styles.css */
 
-.project-container {
-    max-width: fit-content; /* Ширина по содержимому */
-    margin-left: 20px; /* Расположение слева */
+.project-list .project-container {
+    max-width: 800px; /* Максимальная ширина контейнера */
+    margin: 0 auto; /* Центрирование контейнера */
     padding: 20px;
     background: #fff;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Для скрытия краев */
+    overflow: hidden;
+    margin-left: 20px; /* Отступ слева */
 }
 
-.project-container h2 {
-    text-align: center;
+.project-list .search-form {
     margin-bottom: 20px;
 }
 
-.search-form {
-    margin-bottom: 20px;
+.project-list .search-input-container {
+    width: 800px; /* Фиксированная ширина поля поиска */
+    margin-right: 10px; /* Отступ справа для разделения от кнопки */
 }
 
-.search-input-container {
-    display: flex;
-    width: 100%;
-}
-
-.search-input-container input[type="text"] {
-    flex-grow: 1;
+.project-list .search-input-container input[type="text"] {
+    width: 100%; /* Заполнение всей доступной ширины внутри контейнера */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
     font-size: 16px;
 }
 
-.search-input-container button {
+.project-list .search-input-container button {
     padding: 10px;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 0 5px 5px 0;
     background-color: #007bff;
     color: #fff;
@@ -42,43 +38,18 @@
     font-size: 16px;
 }
 
-.search-input-container button:hover {
-    background-color: #0056b3;
-}
-
-.project-table {
+.project-list .project-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
-.project-table th, .project-table td {
+.project-list .project-table th,
+.project-list .project-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
 
-.project-table th {
+.project-list .project-table th {
     background-color: #f2f2f2;
-}
-
-.project-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.project-table tr:hover {
-    background-color: #ddd;
-}
-
-.project-table .inactive-user td {
-    background-color: #ffcccc;
-}
-
-.project-table select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
 }
