@@ -1,0 +1,84 @@
+/* project_list_styles.css */
+
+.project-container {
+    max-width: fit-content; /* Ширина по содержимому */
+    margin-left: 20px; /* Расположение слева */
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Для скрытия краев */
+}
+
+.project-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    margin-bottom: 20px;
+}
+
+.search-input-container {
+    display: flex;
+    width: 100%;
+}
+
+.search-input-container input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+}
+
+.search-input-container button {
+    padding: 10px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-input-container button:hover {
+    background-color: #0056b3;
+}
+
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.project-table th, .project-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.project-table th {
+    background-color: #f2f2f2;
+}
+
+.project-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.project-table tr:hover {
+    background-color: #ddd;
+}
+
+.project-table .inactive-user td {
+    background-color: #ffcccc;
+}
+
+.project-table select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<div class="container">
+<link rel="stylesheet" href="{% static 'project_list_styles.css' %}">
+<div class="project-container">
     <h2>Проекты</h2>
     <form class="search-form" method="get">
     <div class="search-input-container">
@@ -21,38 +22,38 @@
     </div>
 </form>
 
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Наименование ПСР-проекта</th>
-            <th>Регистрационный номер</th>
-            <th>Начало</th>
-            <th>Статус проекта</th>
-            <th>Оптимизируемый процесс</th>
-            <th>Процент завершения, %</th>
-            <th>Действия</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for project in projects %}
-        <tr>
-            <td><a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a></td>
-            <td>{{ project.reg_number }}</td>
-            <td>{{ project.start_date }}</td>
-            <td>{{ project.get_status_display }}</td>
-            <td>{{ project.optimized_process }}</td>
-            <td>{{ project.completion_percentage }}</td>
-            <td>
-                <select onchange="location = this.value;">
-                    <option value="#" selected disabled>Выберите действие</option>
-                    <option value="{% url 'project_update' project.pk %}">Редактировать</option>
-                    <option value="{% url 'project_confirm_delete' project.pk %}">Удалить</option>
-                    <option value="{% url 'project_download_card' project.pk %}">Скачать карточку проекта</option>
-                </select>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+     <table class="project-table">
+        <thead>
+            <tr>
+                <th>Наименование ПСР-проекта</th>
+                <th>Регистрационный номер</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Начало&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>Статус проекта</th>
+                <th>Оптимизируемый процесс</th>
+                <th>Процент завершения,% </th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td><a href="{% url 'project_detail' project.pk %}">{{ project.name }}</a></td>
+                <td>{{ project.reg_number }}</td>
+                <td>{{ project.start_date }}</td>
+                <td>{{ project.get_status_display }}</td>
+                <td>{{ project.optimized_process }}</td>
+                <td>{{ project.completion_percentage }}</td>
+                <td>
+                    <select onchange="location = this.value;">
+                        <option value="#" selected disabled>Выберите действие</option>
+                        <option value="{% url 'project_update' project.pk %}">Редактировать</option>
+                        <option value="{% url 'project_confirm_delete' project.pk %}">Удалить</option>
+                        <option value="{% url 'project_download_card' project.pk %}">Скачать карточку проекта</option>
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
