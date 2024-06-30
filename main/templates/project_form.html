@@ -55,23 +55,73 @@
                         {{ form.project_scope.label_tag }} {{ form.project_scope }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.process_boundaries.label_tag }} {{ form.process_boundaries }}
+                        {{ form.process_boundary_from.label_tag }} {{ form.process_boundary_from }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.process_owner.label_tag }} {{ form.process_owner }}
+                        {{ form.process_boundary_to.label_tag }} {{ form.process_boundary_to }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.project_admin.label_tag }} {{ form.project_admin }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.project_manager.label_tag }} {{ form.project_manager }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.team_members.label_tag }} {{ form.team_members }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.process_customers.label_tag }} {{ form.process_customers }}
-                    </div>
+    {{ form.process_owner.label_tag }} {{ form.process_owner }}
+</div>
+<div class="project-form-group">
+    {{ form.process_owner_position.label_tag }} {{ form.process_owner_position }}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const processOwnerInput = document.querySelector('[name="process_owner"]');
+        const processOwnerPositionInput = document.querySelector('[name="process_owner_position"]');
+
+        processOwnerInput.addEventListener('change', function () {
+            fetch(`/get_position/?username=${processOwnerInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    processOwnerPositionInput.value = data.position;
+                });
+        });
+    });
+</script>
+                   <div class="project-form-group">
+    {{ form.project_manager.label_tag }} {{ form.project_manager }}
+</div>
+<div class="project-form-group">
+    {{ form.project_manager_position.label_tag }} {{ form.project_manager_position }}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const projectManagerInput = document.querySelector('[name="project_manager"]');
+        const projectManagerPositionInput = document.querySelector('[name="project_manager_position"]');
+
+        projectManagerInput.addEventListener('change', function () {
+            fetch(`/get_position/?username=${projectManagerInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    projectManagerPositionInput.value = data.position;
+                });
+        });
+    });
+</script>
+                    <div id="team-members-container">
+    <div class="project-form-group">
+        <input type="text" name="team_member[]" placeholder="Пользователь">
+        <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
+        <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
+        <button type="button" onclick="addTeamMember()">+</button>
+    </div>
+</div>
+<script>
+    function addTeamMember() {
+        const container = document.getElementById('team-members-container');
+        const newMember = document.createElement('div');
+        newMember.classList.add('project-form-group');
+        newMember.innerHTML = `
+            <input type="text" name="team_member[]" placeholder="Пользователь">
+            <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
+            <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
+            <button type="button" onclick="addTeamMember()">+</button>
+        `;
+        container.appendChild(newMember);
+    }
+</script>
                     <div class="project-form-group">
                         {{ form.psr_expert.label_tag }} {{ form.psr_expert }}
                     </div>
@@ -95,7 +145,7 @@
                     <div class="project-form-group">
                         {{ form.planned_economic_effect.label_tag }} {{ form.planned_economic_effect }}
                     </div>
-                    <div class="project-form-group">
+                    <div class="project-form-group" style="display: none;">
                         {{ form.actual_economic_effect.label_tag }} {{ form.actual_economic_effect }}
                     </div>
                     <div class="project-form-group">
@@ -114,16 +164,34 @@
                 <fieldset>
                     <legend>Ключевые события</legend>
                     <div class="project-form-group">
-                        {{ form.start_date.label_tag }} {{ form.start_date }}
+                        {{ form.survey_1.label_tag }} {{ form.survey_1 }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.dc_indicator.label_tag }} {{ form.dc_indicator }}
+                        {{ form.project_start.label_tag }} {{ form.project_start }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.priority_psr_project.label_tag }} {{ form.priority_psr_project }}
+                        {{ form.current_state_building.label_tag }} {{ form.current_state_building }}
                     </div>
                     <div class="project-form-group">
-                        {{ form.organization.label_tag }} {{ form.organization }}
+                        {{ form.production_analysis_1.label_tag }} {{ form.production_analysis_1 }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.target_state_development.label_tag }} {{ form.target_state_development }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.detailed_plan_development.label_tag }} {{ form.detailed_plan_development }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.improvements_implementation.label_tag }} {{ form.improvements_implementation }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.production_analysis_2.label_tag }} {{ form.production_analysis_2 }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.survey_2.label_tag }} {{ form.survey_2 }}
+                    </div>
+                    <div class="project-form-group">
+                        {{ form.closing_meeting.label_tag }} {{ form.closing_meeting }}
                     </div>
                 </fieldset>
             </div>
@@ -133,4 +201,53 @@
         </div>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const customerInput = document.querySelector('[name="customer"]');
+        const customerPositionInput = document.querySelector('[name="customer_position"]');
+
+        customerInput.addEventListener('change', function () {
+            fetch(`/get_position/?username=${customerInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    customerPositionInput.value = data.position;
+                });
+        });
+
+        const processOwnerInput = document.querySelector('[name="process_owner"]');
+        const processOwnerPositionInput = document.querySelector('[name="process_owner_position"]');
+
+        processOwnerInput.addEventListener('change', function () {
+            fetch(`/get_position/?username=${processOwnerInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    processOwnerPositionInput.value = data.position;
+                });
+        });
+
+        const projectManagerInput = document.querySelector('[name="project_manager"]');
+        const projectManagerPositionInput = document.querySelector('[name="project_manager_position"]');
+
+        projectManagerInput.addEventListener('change', function () {
+            fetch(`/get_position/?username=${projectManagerInput.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    projectManagerPositionInput.value = data.position;
+                });
+        });
+
+        function addTeamMember() {
+            const container = document.getElementById('team-members-container');
+            const newMember = document.createElement('div');
+            newMember.classList.add('project-form-group');
+            newMember.innerHTML = `
+                <input type="text" name="team_member[]" placeholder="Пользователь">
+                <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
+                <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
+                <button type="button" onclick="addTeamMember()">+</button>
+            `;
+            container.appendChild(newMember);
+        }
+    });
+</script>
 {% endblock %}

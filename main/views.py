@@ -17,7 +17,7 @@ import io
 import os
 from django.conf import settings
 from django.http import HttpResponse
-
+from django.http import JsonResponse
 
 def home(request):
     return render(request, 'home.html')
@@ -69,10 +69,6 @@ def project_confirm_delete(request, pk):
         return redirect('project_list')
     return render(request, 'project_confirm_delete.html', {'project': project})
 
-
-import os
-
-
 def download_project_card(request, pk):
     project = get_object_or_404(Project, pk=pk)
     document_path = "main/documents/project_template.docx"
@@ -112,6 +108,17 @@ def download_project_card(request, pk):
                             content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response['Content-Disposition'] = f'attachment; filename=project_{project.pk}.docx'
     return response
+
+def get_position(request):
+    username = request.GET.get('username')
+    try:
+        user = User.objects.get(username=username)
+        position = user.userprofile.position
+        department = user.userprofile.department.name if user.userprofile.department else ""
+    except User.DoesNotExist:
+        return JsonResponse({'position': '', 'department': ''}, status=404)
+
+    return JsonResponse({'position': position, 'department': department})
 
 def login_view(request):
     if request.method == 'POST':

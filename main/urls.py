@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from .views import download_project_card
+from .views import get_position
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -20,4 +21,5 @@ urlpatterns = [
     path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('users/<int:user_id>/', views.user_detail, name='user_detail'),
+    path('get_position/', get_position, name='get_position')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

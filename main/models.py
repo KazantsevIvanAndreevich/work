@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 class Department(models.Model):
     name = models.CharField(max_length=100)
 
@@ -48,7 +48,8 @@ class Project(models.Model):
     customer = models.CharField(max_length=255, verbose_name="Заказчик проекта")
     customer_position = models.CharField(max_length=255, verbose_name="Должность заказчика")
     project_scope = models.TextField(null=True, verbose_name="Периметр проекта")
-    process_boundaries = models.TextField(null=True, verbose_name="Границы процесса")
+    process_boundary_from = models.TextField(null=True, verbose_name="Границы процесса от")
+    process_boundary_to = models.TextField(null=True, verbose_name="Границы процесса до")
     process_owner = models.CharField(max_length=255, verbose_name="Владелец процесса")
     project_admin = models.ForeignKey(User, related_name='admin_projects', on_delete=models.SET_NULL, null=True, verbose_name="Администратор проекта")
     project_manager = models.CharField(max_length=255, verbose_name="Руководитель проекта")
@@ -68,6 +69,16 @@ class Project(models.Model):
     measurement_unit = models.CharField(max_length=50, verbose_name="Единица измерения",null=True)
     current_value = models.DecimalField(max_digits=10, decimal_places=2,null=True, verbose_name="Текущий показатель")
     target_value = models.DecimalField(max_digits=10, decimal_places=2,null=True, verbose_name="Целевой показатель")
+    survey_1 = models.DateField(null=True, blank=True, verbose_name="Анкетирование №1")
+    project_start = models.DateField(verbose_name="Старт проекта")
+    current_state_building = models.DateField(verbose_name="Построение текущего состояния процесса")
+    production_analysis_1 = models.DateField(verbose_name="Производственный анализ №1")
+    target_state_development = models.DateField(verbose_name="Разработка целевого состояния процесса")
+    detailed_plan_development = models.DateField(verbose_name="Разработка детального плана мероприятий")
+    improvements_implementation = models.DateField(verbose_name="Внедрение улучшений")
+    production_analysis_2 = models.DateField(verbose_name="Производственный анализ №2")
+    survey_2 = models.DateField(null=True, blank=True, verbose_name="Анкетирование №2")
+    closing_meeting = models.DateField(verbose_name="Завершающее совещание и закрытие проекта")
 
     class Meta:
         verbose_name = "ПСР-проект"
