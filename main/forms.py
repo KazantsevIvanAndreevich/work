@@ -10,12 +10,14 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = [
             'name', 'reg_number', 'status', 'optimized_process', 'customer', 'customer_position',
-            'project_scope', 'process_boundary_from', 'process_boundary_to', 'process_owner', 'process_owner_position',
-            'project_admin', 'project_manager', 'project_manager_position', 'team_members', 'process_customers', 'psr_expert',
-            'key_risk', 'additional_risks', 'completion_percentage', 'overall_status_comment', 'economic_effect_available',
-            'planned_economic_effect', 'actual_economic_effect', 'goal_name', 'measurement_unit', 'current_value',
-            'target_value', 'survey_1', 'project_start', 'current_state_building', 'production_analysis_1', 'target_state_development',
-            'detailed_plan_development', 'improvements_implementation', 'production_analysis_2', 'survey_2', 'closing_meeting'
+            'project_scope', 'process_boundary_from', 'process_boundary_to', 'process_owner',
+            'process_owner_position', 'project_manager', 'project_manager_position', 'team_members',
+            'process_customers', 'psr_expert', 'key_risk', 'additional_risks', 'completion_percentage',
+            'overall_status_comment', 'economic_effect_available', 'planned_economic_effect',
+            'actual_economic_effect', 'goal_name', 'measurement_unit', 'current_value', 'target_value',
+            'survey_1', 'project_start', 'current_state_building', 'production_analysis_1',
+            'target_state_development', 'detailed_plan_development', 'improvements_implementation',
+            'production_analysis_2', 'survey_2', 'closing_meeting'
         ]
         labels = {
             'name': 'Наименование ПСР-проекта',

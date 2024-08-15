@@ -55,7 +55,7 @@ class Project(models.Model):
     project_admin = models.ForeignKey(User, related_name='admin_projects', on_delete=models.SET_NULL, null=True, verbose_name="Администратор проекта")
     project_manager = models.CharField(max_length=255, verbose_name="Руководитель проекта")
     project_manager_position = models.CharField(null=True, max_length=255, verbose_name="Должность руководителя проекта")
-    team_members = models.ManyToManyField(User, related_name='team_projects', verbose_name="Команда проекта")
+    team_members = models.ManyToManyField(User, null=True,  related_name='team_projects', verbose_name="Команда проекта")
     process_customers = models.CharField(max_length=255, verbose_name="Заказчики процесса")
     psr_expert = models.CharField(max_length=255, verbose_name="Эксперт от ПСР")
     key_risk = models.TextField(null=True, verbose_name="Ключевой риск")

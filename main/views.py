@@ -49,9 +49,8 @@ def project_create(request):
             form.save()
             print("Project saved successfully!")
             return redirect('project_list')
-    else:
-        print("Form is not valid:", form.errors)
-        form = ProjectForm()
+        else:
+            print("Form is not valid:", form.errors)
     return render(request, 'project_form.html', {'form': form})
 
 def project_update(request, pk):
