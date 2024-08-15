@@ -42,12 +42,15 @@ def project_detail(request, pk):
     return render(request, 'project_detail.html', {'project': project})
 
 def project_create(request):
+    form = ProjectForm()
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
             form.save()
+            print("Project saved successfully!")
             return redirect('project_list')
     else:
+        print("Form is not valid:", form.errors)
         form = ProjectForm()
     return render(request, 'project_form.html', {'form': form})
 
@@ -110,13 +113,16 @@ def download_project_card(request, pk):
     return response
 
 def get_position(request):
-    username = request.GET.get('username')
+    full_name = request.GET.get('full_name')
     try:
-        user = User.objects.get(username=username)
+        first_name, last_name = full_name.split(' ', 1)
+        user = User.objects.get(first_name=first_name, last_name=last_name)
         position = user.userprofile.position
         department = user.userprofile.department.name if user.userprofile.department else ""
     except User.DoesNotExist:
         return JsonResponse({'position': '', 'department': ''}, status=404)
+    except ValueError:
+        return JsonResponse({'position': '', 'department': ''}, status=400)  # Invalid full_name format
 
     return JsonResponse({'position': position, 'department': department})
 

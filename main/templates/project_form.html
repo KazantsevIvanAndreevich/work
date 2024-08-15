@@ -6,7 +6,6 @@
     <h2>{% if form.instance.pk %}Редактировать проект{% else %}Создать новый проект{% endif %}</h2>
     <form method="post" class="project-form">
         {% csrf_token %}
-
         <fieldset>
             <legend>Общие сведения о проекте</legend>
             <div class="project-form-group">
@@ -100,12 +99,16 @@
         });
     });
 </script>
-                    <div id="team-members-container">
+<div class="project-form-group">
+    <label>Команда проекта</label>
+</div>
+<div id="team-members-container">
     <div class="project-form-group">
         <input type="text" name="team_member[]" placeholder="Пользователь">
         <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
         <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
         <button type="button" onclick="addTeamMember()">+</button>
+        <button type="button" onclick="removeTeamMember(this)">-</button> <!-- кнопка для удаления -->
     </div>
 </div>
 <script>
@@ -118,8 +121,14 @@
             <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
             <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
             <button type="button" onclick="addTeamMember()">+</button>
+            <button type="button" onclick="removeTeamMember(this)">-</button>
         `;
         container.appendChild(newMember);
+    }
+
+    function removeTeamMember(button) {
+        const container = document.getElementById('team-members-container');
+        container.removeChild(button.parentElement);
     }
 </script>
                     <div class="project-form-group">
@@ -142,24 +151,47 @@
                     <div class="project-form-group">
                         {{ form.economic_effect_available.label_tag }} {{ form.economic_effect_available }}
                     </div>
-                    <div class="project-form-group">
-                        {{ form.planned_economic_effect.label_tag }} {{ form.planned_economic_effect }}
+                    <div id="goals-container">
+                        <div class="project-form-group">
+                            <input type="text" name="goal_name[]" placeholder="Наименование цели">
+                            <input type="number" name="current_value[]" placeholder="Текущий показатель">
+                            <input type="number" name="target_value[]" placeholder="Целевой показатель">
+                            <select name="measurement_unit[]">
+                                <option value="%">%</option>
+                                <option value="шт">шт</option>
+                                <option value="день">день</option>
+                                <option value="часы">часы</option>
+                            </select>
+                            <button type="button" onclick="addGoal()">+</button>
+                            <button type="button" onclick="removeGoal(this)">-</button>
+                        </div>
                     </div>
-                    <div class="project-form-group" style="display: none;">
-                        {{ form.actual_economic_effect.label_tag }} {{ form.actual_economic_effect }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.goal_name.label_tag }} {{ form.goal_name }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.measurement_unit.label_tag }} {{ form.measurement_unit }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.current_value.label_tag }} {{ form.current_value }}
-                    </div>
-                    <div class="project-form-group">
-                        {{ form.target_value.label_tag }} {{ form.target_value }}
-                    </div>
+                    <script>
+                        function addGoal() {
+                            const container = document.getElementById('goals-container');
+                            const newGoal = document.createElement('div');
+                            newGoal.classList.add('project-form-group');
+                            newGoal.innerHTML = `
+                                <input type="text" name="goal_name[]" placeholder="Наименование цели">
+                                <input type="number" name="current_value[]" placeholder="Текущий показатель">
+                                <input type="number" name="target_value[]" placeholder="Целевой показатель">
+                                <select name="measurement_unit[]">
+                                    <option value="%">%</option>
+                                    <option value="шт">шт</option>
+                                    <option value="день">день</option>
+                                    <option value="часы">часы</option>
+                                </select>
+                                <button type="button" onclick="addGoal()">+</button>
+                                <button type="button" onclick="removeGoal(this)">-</button>
+                            `;
+                            container.appendChild(newGoal);
+                        }
+
+                        function removeGoal(button) {
+                            const container = document.getElementById('goals-container');
+                            container.removeChild(button.parentElement);
+                        }
+                    </script>
                 </fieldset>
                 <fieldset>
                     <legend>Ключевые события</legend>
@@ -203,51 +235,23 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const customerInput = document.querySelector('[name="customer"]');
-        const customerPositionInput = document.querySelector('[name="customer_position"]');
+        function fetchPosition(inputName, positionInputName) {
+            const input = document.querySelector(`[name="${inputName}"]`);
+            const positionInput = document.querySelector(`[name="${positionInputName}"]`);
 
-        customerInput.addEventListener('change', function () {
-            fetch(`/get_position/?username=${customerInput.value}`)
-                .then(response => response.json())
-                .then(data => {
-                    customerPositionInput.value = data.position;
-                });
-        });
-
-        const processOwnerInput = document.querySelector('[name="process_owner"]');
-        const processOwnerPositionInput = document.querySelector('[name="process_owner_position"]');
-
-        processOwnerInput.addEventListener('change', function () {
-            fetch(`/get_position/?username=${processOwnerInput.value}`)
-                .then(response => response.json())
-                .then(data => {
-                    processOwnerPositionInput.value = data.position;
-                });
-        });
-
-        const projectManagerInput = document.querySelector('[name="project_manager"]');
-        const projectManagerPositionInput = document.querySelector('[name="project_manager_position"]');
-
-        projectManagerInput.addEventListener('change', function () {
-            fetch(`/get_position/?username=${projectManagerInput.value}`)
-                .then(response => response.json())
-                .then(data => {
-                    projectManagerPositionInput.value = data.position;
-                });
-        });
-
-        function addTeamMember() {
-            const container = document.getElementById('team-members-container');
-            const newMember = document.createElement('div');
-            newMember.classList.add('project-form-group');
-            newMember.innerHTML = `
-                <input type="text" name="team_member[]" placeholder="Пользователь">
-                <input type="text" name="team_member_department[]" placeholder="Подразделение" readonly>
-                <input type="text" name="team_member_position[]" placeholder="Должность" readonly>
-                <button type="button" onclick="addTeamMember()">+</button>
-            `;
-            container.appendChild(newMember);
+            input.addEventListener('change', function () {
+                const fullName = input.value;
+                fetch(`/get_position/?full_name=${fullName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        positionInput.value = data.position;
+                    });
+            });
         }
+
+        fetchPosition('customer', 'customer_position');
+        fetchPosition('process_owner', 'process_owner_position');
+        fetchPosition('project_manager', 'project_manager_position');
     });
 </script>
 {% endblock %}
