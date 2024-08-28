@@ -111,6 +111,22 @@ def download_project_card(request, pk):
     response['Content-Disposition'] = f'attachment; filename=project_{project.pk}.docx'
     return response
 
+def documents_view(request, pk):
+    if request.method == 'POST':
+        form = ProjectDocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.project_name = pk  # Убедитесь, что это поле подходит для вашей модели
+            document.save()
+            return redirect('documents', pk=pk)
+    else:
+        form = ProjectDocumentForm()
+
+    documents = ProjectDocument.objects.filter(project_name=pk)  # Фильтруем по правильному полю
+
+    return render(request, 'documents.html', {'form': form, 'documents': documents})
+
+
 def get_position(request):
     full_name = request.GET.get('full_name')
     try:

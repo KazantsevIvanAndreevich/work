@@ -14,6 +14,7 @@ urlpatterns = [
     path('projects/<int:pk>/update/', views.project_update, name='project_update'),
     path('projects/<int:pk>/project_confirm_delete/', views.project_confirm_delete, name='project_confirm_delete'),
     path('projects/<int:pk>/download/', download_project_card, name='project_download_card'),
+    path('projects/<int:pk>/documents/', views.documents_view, name='documents'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('add_user/', views.add_user, name='add_user'),

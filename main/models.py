@@ -34,6 +34,28 @@ status_choices = [
     ('in_progress', 'Реализация')
 ]
 
+class ProjectDocument(models.Model):
+    PROJECT_DOCUMENT_TYPES = [
+        ('checklist', 'Проверочный лист ПСР-проекта'),
+        ('survey', 'Анкетирование заказчиков процесса'),
+        ('template', 'Шаблон карточки ПСР-проекта'),
+        ('report', 'Отчёт о ходе реализации ПСР-проекта'),
+        ('change_request', 'Запрос на изменение ПСР-проекта'),
+        ('completion_report', 'Отчёт о завершении ПСР-проекта'),
+        ('order', 'Приказ о старте реализации ПСР-проекта'),
+        ('plan', 'Детальный план мероприятий по ПСР-проекту'),
+        ('analysis', 'Производственный анализ'),
+    ]
+
+    project_name = models.CharField(max_length=255)  # Название проекта
+    document_type = models.CharField(max_length=50, choices=PROJECT_DOCUMENT_TYPES)
+    file = models.FileField(upload_to='project_documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.project_name} - {self.get_document_type_display()}"
+
+
 class Project(models.Model):
     name = models.CharField(max_length=255, verbose_name="Наименование ПСР-проекта")
     reg_number = models.CharField(max_length=50, unique=True, verbose_name="Регистрационный номер")
