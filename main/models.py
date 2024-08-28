@@ -34,28 +34,6 @@ status_choices = [
     ('in_progress', 'Реализация')
 ]
 
-class ProjectDocument(models.Model):
-    PROJECT_DOCUMENT_TYPES = [
-        ('checklist', 'Проверочный лист ПСР-проекта'),
-        ('survey', 'Анкетирование заказчиков процесса'),
-        ('template', 'Шаблон карточки ПСР-проекта'),
-        ('report', 'Отчёт о ходе реализации ПСР-проекта'),
-        ('change_request', 'Запрос на изменение ПСР-проекта'),
-        ('completion_report', 'Отчёт о завершении ПСР-проекта'),
-        ('order', 'Приказ о старте реализации ПСР-проекта'),
-        ('plan', 'Детальный план мероприятий по ПСР-проекту'),
-        ('analysis', 'Производственный анализ'),
-    ]
-
-    project_name = models.CharField(max_length=255)  # Название проекта
-    document_type = models.CharField(max_length=50, choices=PROJECT_DOCUMENT_TYPES)
-    file = models.FileField(upload_to='project_documents/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.project_name} - {self.get_document_type_display()}"
-
-
 class Project(models.Model):
     name = models.CharField(max_length=255, verbose_name="Наименование ПСР-проекта")
     reg_number = models.CharField(max_length=50, unique=True, verbose_name="Регистрационный номер")
@@ -77,7 +55,7 @@ class Project(models.Model):
     project_admin = models.ForeignKey(User, related_name='admin_projects', on_delete=models.SET_NULL, null=True, verbose_name="Администратор проекта")
     project_manager = models.CharField(max_length=255, verbose_name="Руководитель проекта")
     project_manager_position = models.CharField(null=True, max_length=255, verbose_name="Должность руководителя проекта")
-    team_members = models.ManyToManyField(User, null=True,  related_name='team_projects', verbose_name="Команда проекта")
+    team_members = models.ManyToManyField(User, related_name='team_projects', verbose_name="Команда проекта")
     process_customers = models.CharField(max_length=255, verbose_name="Заказчики процесса")
     psr_expert = models.CharField(max_length=255, verbose_name="Эксперт от ПСР")
     key_risk = models.TextField(null=True, verbose_name="Ключевой риск")
@@ -106,6 +84,27 @@ class Project(models.Model):
         verbose_name = "ПСР-проект"
         verbose_name_plural = "ПСР-проекты"
 
+class ProjectDocument(models.Model):
+    PROJECT_DOCUMENT_TYPES = [
+        ('checklist', 'Проверочный лист ПСР-проекта'),
+        ('survey', 'Анкетирование заказчиков процесса'),
+        ('template', 'Шаблон карточки ПСР-проекта'),
+        ('report', 'Отчёт о ходе реализации ПСР-проекта'),
+        ('change_request', 'Запрос на изменение ПСР-проекта'),
+        ('completion_report', 'Отчёт о завершении ПСР-проекта'),
+        ('order', 'Приказ о старте реализации ПСР-проекта'),
+        ('plan', 'Детальный план мероприятий по ПСР-проекту'),
+        ('analysis', 'Производственный анализ'),
+    ]
+
+    # Удаляем поле project_name
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='documents', default=6)  # Связь с проектом
+    document_type = models.CharField(max_length=50, choices=PROJECT_DOCUMENT_TYPES)
+    file = models.FileField(upload_to='project_documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.project.name} - {self.get_document_type_display()}"
 
 # Модель для задач в проекте
 class Task(models.Model):

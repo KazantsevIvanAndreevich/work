@@ -86,4 +86,4 @@ class RoleForm(forms.ModelForm):
 class ProjectDocumentForm(forms.ModelForm):
     class Meta:
         model = ProjectDocument
-        fields = ['project_name', 'document_type', 'file']
+        fields = ['project', 'document_type', 'file']

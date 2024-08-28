@@ -111,20 +111,29 @@ def download_project_card(request, pk):
     response['Content-Disposition'] = f'attachment; filename=project_{project.pk}.docx'
     return response
 
+
 def documents_view(request, pk):
+    # Получаем объект проекта по его pk
+    project = get_object_or_404(Project, pk=pk)
+
     if request.method == 'POST':
         form = ProjectDocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.project_name = pk  # Убедитесь, что это поле подходит для вашей модели
+            document.project = project  # Привязываем документ к проекту
             document.save()
             return redirect('documents', pk=pk)
     else:
         form = ProjectDocumentForm()
 
-    documents = ProjectDocument.objects.filter(project_name=pk)  # Фильтруем по правильному полю
+    # Получаем все документы, относящиеся к проекту
+    documents = ProjectDocument.objects.filter(project=project)
 
-    return render(request, 'documents.html', {'form': form, 'documents': documents})
+    return render(request, 'documents.html', {
+        'form': form,
+        'documents': documents,
+        'project': project
+    })
 
 
 def get_position(request):

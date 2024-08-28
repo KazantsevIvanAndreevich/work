@@ -4,29 +4,19 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'project_list_styles.css' %}">
 
-<div class="project-list project-container">
-    <h2>Документы по проекту</h2>
+<div class="project-documents-container">
+    <h2>Документы по проекту "{{ document.project.name }}"</h2>
 
-    <!-- Форма для загрузки документов -->
+    <!-- Форма для загрузки документа -->
     <form class="document-upload-form" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="project_name">Наименование проекта</label>
-            <input type="text" id="project_name" name="project_name" class="form-control" placeholder="Введите название проекта" required>
-        </div>
         <div class="form-group">
             <label for="document_type">Тип документа</label>
             <select id="document_type" name="document_type" class="form-control" required>
                 <option value="">Выберите тип документа</option>
-                <option value="checklist">Проверочный лист ПСР-проекта</option>
-                <option value="survey">Анкетирование заказчиков процесса</option>
-                <option value="template">Шаблон карточки ПСР-проекта</option>
-                <option value="report">Отчёт о ходе реализации ПСР-проекта</option>
-                <option value="change_request">Запрос на изменение ПСР-проекта</option>
-                <option value="completion_report">Отчёт о завершении ПСР-проекта</option>
-                <option value="order">Приказ о старте реализации ПСР-проекта</option>
-                <option value="plan">Детальный план мероприятий по ПСР-проекту</option>
-                <option value="analysis">Производственный анализ</option>
+                {% for type, display_name in form.fields.document_type.choices %}
+                    <option value="{{ type }}">{{ display_name }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="form-group">
@@ -38,34 +28,19 @@
 
     <br>
 
-    <!-- Список загруженных документов -->
-    <h3>Список загруженных документов</h3>
-    <table class="project-table">
-        <thead>
-            <tr>
-                <th>Наименование проекта</th>
-                <th>Тип документа</th>
-                <th>Дата загрузки</th>
-                <th>Действие</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for document in documents %}
-            <tr>
-                <td>{{ document.project_name }}</td>
-                <td>{{ document.get_document_type_display }}</td>
-                <td>{{ document.uploaded_at }}</td>
-                <td>
-                    <a href="{{ document.file.url }}" class="btn btn-secondary" download>Скачать</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">Документы отсутствуют</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Отображение списка загруженных документов -->
+    <h3>Загруженные документы</h3>
+    <div class="documents-list">
+        {% for document in documents %}
+        <div class="document-item">
+            <strong>{{ document.get_document_type_display }}</strong>
+            <p>Дата загрузки: {{ document.uploaded_at }}</p>
+            <a href="{{ document.file.url }}" class="btn btn-secondary" download>Скачать</a>
+        </div>
+        {% empty %}
+        <p>Документы отсутствуют</p>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
